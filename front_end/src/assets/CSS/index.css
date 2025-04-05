@@ -1,0 +1,27 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-custom {
+  background-color: #081028;
+}
+
+.bg-custom-item{
+  background-color: #0B1739;
+}
+.hidden{
+  display: none;
+}
+.color-item{
+  color: #0cc0df;
+}
+.bg-color-item{
+  background-color: #0cc0df;
+}

@@ -1,0 +1,8 @@
+back_end/node_modules
+back_end/dist
+back_end/.env
+front_end/node_modules
+front_end/.env
+front_end/.gitignore
+front_end/build
+node_modules/

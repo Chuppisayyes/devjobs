@@ -1,0 +1,274 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// Prisma schema file
+
+// Specify the database provider
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model LOAITAIKHOAN {
+  idLoaiTK  Int         @id @default(autoincrement())
+  quyen     String
+  moTa      String?     @db.Text
+  trangThai Int         @default(2)
+  nguoiDung NGUOIDUNG[]
+  congTy    CONGTY[]
+  Admin     Admin[]
+}
+
+model NGUOIDUNG {
+  idNguoiDung  Int      @id @default(autoincrement())
+  idLoaiTK     Int
+  idViTri      Int?
+  idTinhThanh  Int
+  idCapDo      Int?
+  ten          String
+  ngaySinh     DateTime
+  sdt          String
+  diaChi       String?
+  email        String   @unique
+  matKhau      String
+  luongBatDau  Float?
+  luongKetThuc Float?
+  trangThai    String   @default("Chờ Duyệt")
+  anhDaiDien   String?
+  kinhnghiem   Int?
+  TrinhDo      String?
+  xacThuc      Boolean  @default(false)
+  loaiTaiKhoan LOAITAIKHOAN   @relation(fields: [idLoaiTK], references: [idLoaiTK])
+  viTri        VITRIUNGTUYEN? @relation(fields: [idViTri], references: [idViTri])
+  tinhThanh    TINHTHANH      @relation(fields: [idTinhThanh], references: [idTinhThanh])
+  capDo        CapDo?         @relation(fields: [idCapDo], references: [idCapDo])
+  hocVan       HOCVAN[]
+  kinhNghiem   KINHNGHIEM[]
+  duAn         DUAN[]
+  kyNang       KYNANG[]
+  thongBao     THONGBAO[]
+  chungChi     CHUNGCHI[]
+  danhSachUV   DANHSACH_UV[]
+}
+
+model VITRIUNGTUYEN {
+  idViTri   Int         @id @default(autoincrement())
+  tenViTri  String
+  trangThai String      @default("Đã Duyệt")
+  nguoiDung NGUOIDUNG[]
+  BAIDANG   BAIDANG[]
+}
+
+model TINHTHANH {
+  idTinhThanh  Int         @id @default(autoincrement())
+  tenTinhThanh String
+  trangThai    String      @default("Đã Duyệt")
+  viDo         Float       @default(0)
+  kinhDo       Float       @default(0)
+  nguoiDung    NGUOIDUNG[]
+  baiDang      BAIDANG[]
+  quanHuyen    QUANHUYEN[]
+}
+
+model QUANHUYEN {
+  idQuanHuyen  Int    @id @default(autoincrement())
+  tenQuanHuyen String
+  trangThai    String @default("Đã Duyệt")
+  idTinhThanh  Int?
+
+  TINHTHANH TINHTHANH? @relation(fields: [idTinhThanh], references: [idTinhThanh])
+  phuongXa  PHUONGXA[]
+}
+
+model PHUONGXA {
+  idPhuongXa  Int    @id @default(autoincrement())
+  tenPhuongXa String
+  trangThai   String @default("Đã Duyệt")
+  idQuanHuyen Int?
+
+  QUANHUYEN QUANHUYEN? @relation(fields: [idQuanHuyen], references: [idQuanHuyen])
+}
+
+model CapDo {
+  idCapDo   Int         @id @default(autoincrement())
+  tenCapDo  String
+  moTa      String?     @db.Text
+  trangThai String      @default("Đã Duyệt")
+  mucDo     Int         @default(1)
+  nguoiDung NGUOIDUNG[]
+  BAIDANG   BAIDANG[]
+}
+
+model HOCVAN {
+  idHocVan        Int       @id @default(autoincrement())
+  noiHoc          String
+  diaChi          String?
+  nganhHoc        String
+  diem            Float?
+  thoiGianBatDau  DateTime?
+  thoiGianKetThuc DateTime?
+  idNguoiDung     Int
+
+  nguoiDung NGUOIDUNG @relation(fields: [idNguoiDung], references: [idNguoiDung])
+}
+
+model KINHNGHIEM {
+  idKinhNghiem    Int      @id @default(autoincrement())
+  tenCongTy       String
+  thoiGianBatDau  DateTime
+  thoiGianKetThuc DateTime
+  viTri           String?
+  moTa            String?  @db.Text
+  idNguoiDung     Int
+
+  nguoiDung NGUOIDUNG @relation(fields: [idNguoiDung], references: [idNguoiDung])
+}
+
+model DUAN {
+  idDuAn      Int     @id @default(autoincrement())
+  tenDuAn     String
+  congNghe    String
+  link        String?
+  moTa        String? @db.Text
+  idNguoiDung Int
+
+  nguoiDung NGUOIDUNG @relation(fields: [idNguoiDung], references: [idNguoiDung])
+}
+
+model KYNANG {
+  idKyNang    Int    @id @default(autoincrement())
+  idLoaiKN    Int
+  noiDung     String
+  idNguoiDung Int
+
+  nguoiDung NGUOIDUNG @relation(fields: [idNguoiDung], references: [idNguoiDung])
+  loaiKN    LoaiKN    @relation(fields: [idLoaiKN], references: [idLoaiKN])
+}
+
+model LoaiKN {
+  idLoaiKN  Int      @id @default(autoincrement())
+  tenKyNang String
+  moTa      String?  @db.Text
+  kyNang    KYNANG[]
+}
+
+model CHUNGCHI {
+  idChungChi  Int     @id @default(autoincrement())
+  tenChungChi String
+  link        String?
+  donViCap    String?
+  ketQua      String?
+  idNguoiDung Int
+
+  nguoiDung NGUOIDUNG @relation(fields: [idNguoiDung], references: [idNguoiDung])
+}
+
+model THONGBAO {
+  idThongBao  Int      @id @default(autoincrement())
+  noiDung     String
+  thoiGianTB  DateTime
+  trangThai   Int      @default(0)
+  idNguoiDung Int?
+  idCongTy    Int?
+  idBaiDang   Int
+
+  nguoiDung NGUOIDUNG? @relation(fields: [idNguoiDung], references: [idNguoiDung])
+  congty    CONGTY?    @relation(fields: [idCongTy], references: [idCongTy])
+  baiDang   BAIDANG    @relation(fields: [idBaiDang], references: [idBaiDang])
+}
+
+model BAIDANG {
+  idBaiDang    Int      @id @default(autoincrement())
+  idCongTy     Int
+  idTinhThanh  Int      @default(2)
+  idCapDo      Int      @default(2)
+  idViTri      Int      @default(2)
+  tenBaiDang   String
+  soLuong      Int
+  trangThai    String   @default("Chờ Duyệt")
+  hinhAnh      String?
+  luongBatDau  Float
+  luongKetThuc Float
+  kinhnghiem   Int?
+  TrinhDo      String?
+  hanChot      DateTime
+  ngayDang     DateTime
+  ngaySua      DateTime
+  diaChiCuThe  String?
+  moTa         String?  @db.Text
+
+  congTy    CONGTY        @relation(fields: [idCongTy], references: [idCongTy])
+  tinhThanh TINHTHANH     @relation(fields: [idTinhThanh], references: [idTinhThanh])
+  capDo     CapDo         @relation(fields: [idCapDo], references: [idCapDo])
+  viTri     VITRIUNGTUYEN @relation(fields: [idViTri], references: [idViTri])
+
+  danhSachUV DANHSACH_UV[]
+  thongBao   THONGBAO[]
+  yeuCau     YeuCau[]
+}
+
+model YeuCau {
+  idYeuCau  Int    @id @default(autoincrement())
+  noiDung   String
+  idBaiDang Int
+
+  baiDang BAIDANG @relation(fields: [idBaiDang], references: [idBaiDang])
+}
+
+model DANHSACH_UV {
+  idBaiDang    Int
+  idNguoiDung  Int
+  thoiGianNop  DateTime
+  trangThai    String   @default("Chờ Duyệt")
+  thoiBatDau   String?
+  kieuPhongVan String?
+  diaChi       String?
+  link         String?
+
+  baiDang   BAIDANG   @relation(fields: [idBaiDang], references: [idBaiDang])
+  nguoiDung NGUOIDUNG @relation(fields: [idNguoiDung], references: [idNguoiDung])
+
+  @@id([idBaiDang, idNguoiDung])
+}
+
+model CONGTY {
+  idCongTy        Int      @id @default(autoincrement())
+  idLoaiTK        Int? // Thêm dấu hỏi để cho phép null
+  tenCongTy       String
+  diaChi          String
+  email           String   @unique
+  sDT             String
+  linkWeb         String?
+  nganhNghe       String?
+  soLuongNhanVien Int?
+  logo            String?
+  trangThai       String   @default("Chờ Duyệt")
+  ngayThanhLap    DateTime
+  moTa            String?  @db.Text
+  matKhau         String
+  xacThuc         Boolean  @default(false)
+
+  loaiTaiKhoan LOAITAIKHOAN? @relation(fields: [idLoaiTK], references: [idLoaiTK])
+  baiDang      BAIDANG[]
+  THONGBAO     THONGBAO[]
+}
+
+model Admin {
+  id         Int       @id @default(autoincrement())
+  idLoaiTK   Int?
+  email      String    @unique
+  matKhau    String
+  ten        String
+  sDT        String?
+  ngaySinh   DateTime?
+  anhDaiDien String?
+
+  loaiTaiKhoan LOAITAIKHOAN? @relation(fields: [idLoaiTK], references: [idLoaiTK])
+}
