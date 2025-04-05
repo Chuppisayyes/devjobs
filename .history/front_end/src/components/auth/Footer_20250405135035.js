@@ -74,7 +74,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#191F33]">
+    <footer className="bg-[#fdd9bd]">
       <div className="mx-auto max-w-7xl px-4">
         <div className="grid gap-6 py-16 sm:grid-cols-[40fr_30fr_30fr] md:grid-cols-[40fr_30fr_30fr_30fr]">
           <div className="">

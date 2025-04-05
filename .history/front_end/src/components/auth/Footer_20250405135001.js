@@ -145,7 +145,7 @@ const Footer = () => {
           <FaArrowUp color="#fff" size={22} />
         </button>
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4 py-3 md:flex-row md:justify-between">
-          <p className="text-center hover:text-[#234e77]  m-0">
+          <p className="text-center text-[#13616f]  m-0">
             DevJobs © 2024. Developed by{" "}
             <span className="hover:text-[#234e77]">Nhóm 9</span>
           </p>

@@ -145,9 +145,9 @@ const Footer = () => {
           <FaArrowUp color="#fff" size={22} />
         </button>
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-3 px-4 py-3 md:flex-row md:justify-between">
-          <p className="text-center hover:text-[#234e77]  m-0">
+          <p className="text-center text-[#0b3137]  m-0">
             DevJobs © 2024. Developed by{" "}
-            <span className="hover:text-[#234e77]">Nhóm 9</span>
+            <span className="text-white">Nhóm 9</span>
           </p>
           <ul className="flex items-center gap-6 m-0">
             {socialLinks.map(({ name, icon, link }) => (
@@ -155,7 +155,7 @@ const Footer = () => {
                 <a
                   href={link}
                   title={name}
-                  className="text-[#ff9028]  hover:text-[#234e77]"
+                  className="text-[#0cc0df]  hover:text-white"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
